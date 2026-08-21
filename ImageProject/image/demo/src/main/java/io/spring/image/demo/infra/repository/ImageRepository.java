@@ -1,19 +1,22 @@
 package io.spring.image.demo.infra.repository;
 
-import io.spring.image.demo.domain.entity.Image;
-import io.spring.image.demo.domain.enums.ImageExtension;
-import io.spring.image.demo.infra.repository.specs.GenericSpecs;
+import java.util.List;
+
 import org.springframework.data.jpa.domain.Specification;
+import static org.springframework.data.jpa.domain.Specification.anyOf;
+import static org.springframework.data.jpa.domain.Specification.where;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
+import io.spring.image.demo.domain.entity.Image;
+import io.spring.image.demo.domain.enums.ImageExtension;
+import static io.spring.image.demo.infra.repository.specs.GenericSpecs.conjunction;
+import static io.spring.image.demo.infra.repository.specs.ImageSpecs.extensionEqual;
+import static io.spring.image.demo.infra.repository.specs.ImageSpecs.nameLike;
+import static io.spring.image.demo.infra.repository.specs.ImageSpecs.tagsLike;
 
-import static io.spring.image.demo.infra.repository.specs.GenericSpecs.*;
-import static io.spring.image.demo.infra.repository.specs.ImageSpecs.*;
-import static org.springframework.data.jpa.domain.Specification.*;
-
+@SuppressWarnings("unused")
 public interface ImageRepository extends JpaRepository<Image, String>, JpaSpecificationExecutor<Image> {
 
     default List<Image> findByExtensionAndNameOrTagsLike(ImageExtension extension, String query){

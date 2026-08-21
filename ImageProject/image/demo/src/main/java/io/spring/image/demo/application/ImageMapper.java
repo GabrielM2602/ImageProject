@@ -1,15 +1,16 @@
 package io.spring.image.demo.application;
 
-import io.spring.image.demo.domain.entity.Image;
-import io.spring.image.demo.domain.enums.ImageExtension;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import io.spring.image.demo.domain.entity.Image;
+import io.spring.image.demo.domain.enums.ImageExtension;
+
+@SuppressWarnings("unused")
 @Component
 public class ImageMapper {
 
