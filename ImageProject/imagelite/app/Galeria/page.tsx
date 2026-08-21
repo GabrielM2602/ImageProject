@@ -1,32 +1,70 @@
-'use client'
-import { Template } from "../Componente/template";
 
-interface GaleriaProps {
-  mensagem?: string;
-  mensagemBotao?: string;
-}
+  //import { Template } from '../components/Template';
+  //import { ImageCard } from '../components/Image';
+  import { Template, ImageCard } from '@/Componente';
+  
+  
+  
+  export default function Galeria() {
+    return (
+      <main>
+        <Template>
+          
+            <section className="grid grid-cols-4 gap-4  p-4">
+              <ImageCard 
+              imageName='Natureza' 
+              imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfNKV44LgLqcCIVKoS56GMzSJWre1EH2pY10uJK6EZFw&s=10' 
+              imageSize='15 mb'
+              uploadDate='2023-01-01'
+              />
+              <ImageCard 
+              imageName='Natureza' 
+              imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfNKV44LgLqcCIVKoS56GMzSJWre1EH2pY10uJK6EZFw&s=10' 
+              imageSize='15 mb'
+              uploadDate='2023-01-01'
+              />
+              <ImageCard 
+              imageName='Natureza' 
+              imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfNKV44LgLqcCIVKoS56GMzSJWre1EH2pY10uJK6EZFw&s=10' 
+              imageSize='15 mb'
+              uploadDate='2023-01-01'
+              />
+              <ImageCard 
+              imageName='Natureza' 
+              imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfNKV44LgLqcCIVKoS56GMzSJWre1EH2pY10uJK6EZFw&s=10' 
+              imageSize='15 mb'
+              uploadDate='2023-01-01'
+              />
+              <ImageCard 
+              imageName='Natureza' 
+              imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfNKV44LgLqcCIVKoS56GMzSJWre1EH2pY10uJK6EZFw&s=10' 
+              imageSize='15 mb'
+              uploadDate='2023-01-01'
+              />
+              <ImageCard 
+              imageName='Natureza' 
+              imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfNKV44LgLqcCIVKoS56GMzSJWre1EH2pY10uJK6EZFw&s=10' 
+              imageSize='15 mb'
+              uploadDate='2023-01-01'
+              />
+              <ImageCard 
+              imageName='Natureza' 
+              imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfNKV44LgLqcCIVKoS56GMzSJWre1EH2pY10uJK6EZFw&s=10' 
+              imageSize='15 mb'
+              uploadDate='2023-01-01'
+              />
+              
+  
+  
+              
+              
+            </section>
+            
+         
+          
+        </Template>
+       
+      </main>
 
-const Galeria = ({ mensagem, mensagemBotao }: GaleriaProps) => {
-
-  const clique = () => {
-    console.log("Você clicou no botão!");
-    alert(mensagemBotao);
+    )
   }
-
-  return (
-
-      <div>
-        <main className="dark:bg-black sm:items-start">
-          <Template children={<>oi</>}>
-      
-          </Template>
-          <h1>Galeria</h1>
-          <p>{mensagem}</p>
-          <button onClick={clique}>Clique aqui</button>
-        </main>
-      </div>
-    
-  );
-}
-
-export default Galeria;
