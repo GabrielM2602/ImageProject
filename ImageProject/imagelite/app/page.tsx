@@ -1,16 +1,15 @@
-import Image from "next/image";
-import Componente from "./Componente/page";
-import { Template } from "./Componente/template";
+import { PrimeiroComponente } from './components/PrimeiroComponente';
 
 export default function Home() {
   return (
-    <div className="dark:bg-black">
-      <main className="dark:bg-black sm:items-start">
-        <Template children={<>oi</>}>
- 
-        </Template>
-      
+    <div>
+      <main>
+        <h1>Welcome to Next.js!</h1>
+        <PrimeiroComponente mensagem="Olá, mundo!" />
+        <PrimeiroComponente  mesagemBotao="Segundo botão clicado!" />
+
       </main>
     </div>
-  );
+
+  )
 }
