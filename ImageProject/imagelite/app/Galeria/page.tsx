@@ -24,6 +24,22 @@ export default function Galeria() {
     console.table(result);
   }
 
+  /*renderizando a imagem na tela*/
+  function renderImageCard(image: Image ) {
+    return (
+      <ImageCard imageName = {image.name} 
+                 imageUrl={image.url}
+                 imageSize = {image.size}
+                 uploadDate={image.uploadDate} />
+    )
+  }
+
+  function renderImageCards() {
+    //return images.map((image) => renderImageCard(image));
+    return images.map(renderImageCard);
+  }
+
+
   return (
     <Template>
 
@@ -36,18 +52,10 @@ export default function Galeria() {
 
       <section className="grid grid-cols-3 gap-4 p-4">
 
-        {images.map((image, index) => (
-          <ImageCard
-            key={index}
-            imageName={image.name}
-            imageUrl={image.url}
-            imageSize={image.size?.toString()}
-            uploadDate={image.uploadDate}
-          />
-        ))}
-
+        {renderImageCards()}
+        
       </section>
 
     </Template>
   );
-}
+} 
