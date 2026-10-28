@@ -1,32 +1,30 @@
 'use client'
 
-//import { Template } from '../components/Template';
-//import { ImageCard } from '../components/Image';
-import { Template, ImageCard, } from '@/components';
-import { ImageService, useImageService } from '@/resource/service';
+import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import Link from 'next/link';
+import { Template, ImageCard, Button, Lightbox, buttonBase, buttonClasses } from '@/components';
+import { useImageService } from '@/resource/service';
 import { Image } from '@/resource/image';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components';
 
-
-
+const formats = [
+  { value: '', label: 'Todos' },
+  { value: 'JPG', label: 'JPG' },
+  { value: 'PNG', label: 'PNG' },
+  { value: 'GIF', label: 'GIF' },
+  { value: 'JPEG', label: 'JPEG' },
+];
 
 export default function Galeria() {
-
   const useService = useImageService();
 
   const [images, setImages] = useState<Image[]>([]);
-
   const [query, setQuery] = useState<string>('');
-
   const [extension, setExtension] = useState<string>('');
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [error, setError] = useState('');
+  const [selected, setSelected] = useState<Image | null>(null);
 
-  const router = useRouter();
+  const closeLightbox = useCallback(() => setSelected(null), []);
 
   async function searchImages() {
     setIsLoading(true);
@@ -37,84 +35,125 @@ export default function Galeria() {
       setImages(result);
     } catch (cause) {
       console.error('Erro ao buscar imagens:', cause);
-      setError('Não foi possível carregar as imagens. Tente novamente.');
+      setError('Não foi possível carregar as imagens. Verifique se o servidor está no ar e tente de novo.');
     } finally {
       setIsLoading(false);
     }
   }
 
-  /*renderizando a imagem na tela*/
-  function renderImageCard(image: Image) {
-    return (
-      <ImageCard key={image.url}
-        imageName={image.name}
-        imageUrl={image.url}
-        imageSize={image.size}
-        extension={image.extension}
-        uploadDate={image.uploadDate}
-      />
-    )
-  }
+  // Carrega as imagens assim que a página abre
+  useEffect(() => {
+    searchImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  function renderImageCards() {
-    //return images.map((image) => renderImageCard(image));
-    return images.map(renderImageCard);
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    searchImages();
   }
-
 
   return (
     <Template>
-
-      <section className="flex flex-col items-center justify-center my-5">
-        <div className="flex space-x-4">
-          <input type="text"
-            onChange={(e) => setQuery(e.target.value)}
-            className="border px-4 py-2 rounded-lg text-white-900" placeholder="Buscar imagens..." />
-          <select onChange={event => setExtension(event.target.value)}
-            className="border px-4 py-2 rounded-lg text-white-900">
-            <option value="">All formats</option>
-            <option value="JPG">JPG</option>
-            <option value="PNG">PNG</option>
-            <option value="GIF">GIF</option>
-            <option value="JPEG">JPEG</option>
-
-          </select>
-          <button
-            className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
-            onClick={searchImages}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Carregando...' : 'Buscar'}
-          </button>
-          <Button
-            type="button"
-            variant="danger"
-            onClick={() => router.push('/upload')}
-          >
-            Add New
-          </Button>        
-          
+      <div className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-4xl font-semibold tracking-tight">Galeria</h1>
+            <p className="mt-1 text-muted" role="status">
+              {isLoading ? 'Buscando imagens...' : `${images.length} ${images.length === 1 ? 'imagem' : 'imagens'}`}
+            </p>
           </div>
-      </section>
+          <Link href="/upload" className={`${buttonBase} ${buttonClasses.primary}`}>
+            Enviar imagem
+          </Link>
+        </div>
 
-      <section className="grid grid-cols-3 gap-4 p-4">
+        <form onSubmit={handleSubmit} className="mb-8 flex flex-col gap-3 md:flex-row md:items-center">
+          <div className="relative flex-1">
+            <svg
+              className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+              strokeLinecap="round" aria-hidden
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar pelo nome da imagem"
+              aria-label="Buscar imagens"
+              className="h-11 w-full rounded-lg border border-line bg-white pl-11 pr-3.5 placeholder:text-muted/60 focus:border-forest"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filtrar por formato">
+            {formats.map(({ value, label }) => (
+              <button
+                key={label}
+                type="button"
+                aria-pressed={extension === value}
+                onClick={() => setExtension(value)}
+                className={`h-11 rounded-lg border px-4 text-sm font-semibold transition-colors ${
+                  extension === value
+                    ? 'border-forest bg-mint text-forest-deep'
+                    : 'border-line bg-white text-muted hover:border-forest hover:text-forest'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Buscando...' : 'Buscar'}
+          </Button>
+        </form>
+
         {isLoading ? (
-          <p className="col-span-full text-center" role="status">
-            Carregando imagens...
-          </p>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-hidden>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="animate-pulse rounded-xl border border-line bg-white p-2">
+                <div className="aspect-[4/3] rounded-md bg-line/60" />
+                <div className="mx-1.5 mb-2 mt-4 h-4 w-2/3 rounded bg-line/60" />
+              </div>
+            ))}
+          </div>
         ) : error ? (
-          <p className="col-span-full text-center text-red-600" role="alert">
-            {error}
-          </p>
+          <div className="rounded-xl border border-alert/30 bg-alert/5 p-8 text-center" role="alert">
+            <p className="text-alert">{error}</p>
+            <Button type="button" variant="secondary" className="mt-4" onClick={searchImages}>
+              Tentar de novo
+            </Button>
+          </div>
         ) : images.length === 0 ? (
-          <p className="col-span-full text-center">
-            Nenhuma imagem encontrada.
-          </p>
+          <div className="rounded-xl border border-dashed border-line p-12 text-center">
+            <p className="font-display text-xl font-semibold">Nenhuma imagem encontrada</p>
+            <p className="mt-1 text-muted">Mude a busca ou o formato, ou envie uma nova imagem.</p>
+            <Link href="/upload" className={`${buttonBase} ${buttonClasses.primary} mt-5`}>
+              Enviar imagem
+            </Link>
+          </div>
         ) : (
-          renderImageCards()
+          <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {images.map((image) => (
+              <ImageCard
+                key={image.url}
+                imageName={image.name}
+                imageUrl={image.url}
+                imageSize={image.size}
+                extension={image.extension}
+                uploadDate={image.uploadDate}
+                onOpen={() => setSelected(image)}
+              />
+            ))}
+          </section>
         )}
-      </section>
+      </div>
 
+      {selected && (
+        <Lightbox imageUrl={selected.url} imageName={selected.name} onClose={closeLightbox} />
+      )}
     </Template>
   );
-} 
+}

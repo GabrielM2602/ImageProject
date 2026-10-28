@@ -1,116 +1,46 @@
 import Link from "next/link";
+import { Template, buttonBase, buttonClasses } from "@/components";
+
+const facts = [
+  { title: "Formatos aceitos", text: "PNG, JPG, JPEG e GIF" },
+  { title: "Tamanho máximo", text: "20 MB por arquivo" },
+  { title: "Busca", text: "Por nome e por formato" },
+];
 
 export default function Home() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#080808",
-        color: "white",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Cabeçalho */}
-      <header
-        style={{
-          height: "60px",
-          backgroundColor: "#155c2d",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "0 50px",
-        }}
-      >
-        <h2 style={{ alignItems: "center" }}>ImageLite</h2>
+    <Template>
+      <section className="mx-auto max-w-6xl px-6 py-10 md:py-16">
+        <div className="crop frame-in p-8 md:p-16">
+          <i /><i /><i /><i />
 
-      </header>
-
-      {/* Conteúdo principal */}
-      <section
-        style={{
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          padding: "40px",
-        }}
-      >
-        <div style={{ maxWidth: "700px" }}>
-          <h1
-            style={{
-              fontSize: "56px",
-              marginBottom: "20px",
-            }}
-          >
-            Suas imagens,
-            <br />
-            <span style={{ color: "#35a853" }}>simples e organizadas.</span>
+          <h1 className="max-w-3xl font-display text-5xl font-semibold leading-[0.98] tracking-tight md:text-7xl">
+            Suas imagens, simples e organizadas.
           </h1>
 
-          <p
-            style={{
-              color: "#aaa",
-              fontSize: "18px",
-              lineHeight: "1.6",
-              marginBottom: "35px",
-            }}
-          >
-            Encontre, visualize e organize suas imagens de forma rápida
-            e prática com o ImageLite.
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">
+            Envie, busque e visualize suas imagens em um só lugar.
           </p>
 
-          {/* Botões */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "15px",
-            }}
-          >
-            <Link
-              href="/galeria"
-              style={{
-                backgroundColor: "#2878f0",
-                color: "white",
-                padding: "14px 28px",
-                borderRadius: "8px",
-                textDecoration: "none",
-                fontWeight: "bold",
-              }}
-            >
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link href="/galeria" className={`${buttonBase} ${buttonClasses.primary}`}>
               Ver galeria
             </Link>
-
-            <Link
-              href="/adicionar"
-              style={{
-                backgroundColor: "#e9363f",
-                color: "white",
-                padding: "14px 28px",
-                borderRadius: "8px",
-                textDecoration: "none",
-                fontWeight: "bold",
-              }}
-            >
-              Adicionar imagem
+            <Link href="/upload" className={`${buttonBase} ${buttonClasses.secondary}`}>
+              Enviar imagem
             </Link>
           </div>
+
+          <dl className="mt-16 grid gap-6 border-t border-line pt-6 sm:grid-cols-3">
+            {facts.map(({ title, text }) => (
+              <div key={title}>
+                <dt className="text-sm text-muted">{title}</dt>
+                <dd className="mt-1 font-display text-lg font-semibold">{text}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
-
-      {/* Rodapé */}
-      <footer
-        style={{
-          backgroundColor: "#155c2d",
-          textAlign: "center",
-          padding: "15px",
-          color: "#ddd",
-        }}
-      >
-        Desenvolvido por Gabriel
-      </footer>
-    </main>
+    </Template>
   );
 }
