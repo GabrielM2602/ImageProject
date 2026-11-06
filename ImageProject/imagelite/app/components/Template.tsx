@@ -51,6 +51,18 @@ const Header: React.FC = () => {
               </Link>
             );
           })}
+
+          <Link
+            href="/login"
+            aria-current={pathname === '/login' ? 'page' : undefined}
+            className={`ml-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+              pathname === '/login'
+                ? 'bg-forest-deep text-white'
+                : 'bg-forest text-white hover:bg-forest-deep'
+            }`}
+          >
+            Entrar
+          </Link>
         </nav>
       </div>
     </header>
