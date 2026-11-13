@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.spring.image.demo.domain.AccessToken;
 import io.spring.image.demo.domain.entity.User;
 import io.spring.image.demo.application.jwt.SecurityKeyGenerator;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class JwtService {
     private final SecurityKeyGenerator keyGenerator;
 
